@@ -1,1 +1,3 @@
 {{ $blog->title }}
+
+{{ $blog->body }}

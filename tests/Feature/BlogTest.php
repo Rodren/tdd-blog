@@ -17,7 +17,7 @@ class BlogTest extends TestCase
     public function user_can_see_all_blogs()
     {
         // past / scene / prepare
-        $blog1 = $this->createBlog();;
+        $blog1 = $this->createBlog([], $num = 2);
 
         // present / action / act
         $response = $this->get('/blog');
@@ -25,12 +25,14 @@ class BlogTest extends TestCase
         // future / assertion / assert
         $response->assertStatus(200);
         $response->assertSee($blog1->title);
+        $response->assertSee($blog1->body);
+
     }
 
     /** @test */
     public function user_can_visit_a_single_blog() {
         // prepare
-        $blog = $this->createBlog('This is my new blog');
+        $blog = $this->createBlog(['title' => 'This is my new blog']);
 
         // act
         $res = $this->get('/blog/' . $blog->id);
@@ -43,18 +45,13 @@ class BlogTest extends TestCase
     /** @test */
     public function user_can_store_blog() {
         // prepare
-        $data = ['title'=> 'title for blog to store'];
+        $blog = Blog::factory()->raw();
         // act
-        $res = $this->post('/blog', $data);
+        $res = $this->post('/blog', $blog);
 
         // assert
         $res->assertRedirect('/blog');
-        $this->assertDatabaseHas('blogs', $data);
+        $this->assertDatabaseHas('blogs', $blog);
 
-    }
-
-    protected function createBlog($title=null) {
-        $title = $title ?? 'Simple ever blog';
-        return Blog::create(['title'=>$title]);
     }
 }
