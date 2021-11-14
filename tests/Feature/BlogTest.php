@@ -14,24 +14,37 @@ class BlogTest extends TestCase
     /** @test */
     public function user_can_see_all_blogs()
     {
-        $blog1 = $this->createBlog([], $num = 2);
+        $blog = $this->createBlog(['published_at' => now()], 2);
+        $unPublishedBlog = $this->createBlog([], 2);
 
         $response = $this->get('/blog');
 
         $response->assertStatus(200);
-        $response->assertSee($blog1[0]->title);
-        $response->assertSee($blog1[0]->body);
+        $response->assertSee($blog[0]->title);
+        $response->assertSee($blog[0]->body);
+        $response->assertDontSee($unPublishedBlog[0]->title);
     }
 
     /** @test */
     public function user_can_visit_a_single_blog()
     {
-        $blog = $this->createBlog(['title' => 'This is my new blog']);
+        $blog = $this->createBlog(['title' => 'This is my new blog', 'published_at' => now()]);
 
         $res = $this->get('/blog/' . $blog->id);
 
         $res->assertStatus(200);
         $res->assertSee($blog->title);
+    }
+
+    /** @test */
+    public function user_can_not_visit_a_published_single_blog()
+    {
+        $blog = $this->createBlog();
+
+        $res = $this->get('/blog/' . $blog->id);
+
+        $res->assertStatus(404);
+        $res->assertDontSee($blog->title);
     }
 
     /** @test */

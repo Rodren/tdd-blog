@@ -10,5 +10,17 @@ class Blog extends Model
     use HasFactory;
 
     // protected $guarded = [];
-    protected $fillable = ['title', 'body'];
+    protected $fillable = ['title', 'body', 'published_at'];
+
+    public function scopePublished($query)
+    {
+        return $query->whereNotNull('published_at');
+    }
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope('published', function (Builder $builder) {
+    //         $builder->whereNotNull('published_at');
+    //     });
+    // }
 }

@@ -9,7 +9,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::published()->get();
         return view('blog.index', compact('blogs'));
     }
 
@@ -18,8 +18,10 @@ class BlogController extends Controller
         return view('blog.create');
     }
 
-    public function show(Blog $blog)
+    public function show($id)
     {
+        $blog = Blog::published()->findOrFail($id);
+
         return view('blog.show', compact('blog'));
     }
 
