@@ -10,7 +10,7 @@ class Blog extends Model
     use HasFactory;
 
     // protected $guarded = [];
-    protected $fillable = ['title', 'body', 'published_at'];
+    protected $fillable = ['title', 'body', 'image', 'published_at'];
 
     public function scopePublished($query)
     {
