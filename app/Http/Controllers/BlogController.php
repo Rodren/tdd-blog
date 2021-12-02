@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -28,8 +27,7 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        Storage::put($request->image->name, file_get_contents($request->image));
-        $blog = Blog::create($request->all());
+        Blog::create($request->except(['image']))->uploadImage($request->image);
 
         return redirect('/blog');
     }

@@ -18,7 +18,7 @@ class BlogFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'body' => $this->faker->text(),
-            'image' => UploadedFile::fake()->image('photo1.jpg'),
+            'image' => UploadedFile::fake()->image("photo1.jpg"),
         ];
     }
 }

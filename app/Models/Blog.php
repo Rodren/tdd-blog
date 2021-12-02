@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Blog extends Model
 {
@@ -17,10 +18,9 @@ class Blog extends Model
         return $query->whereNotNull('published_at');
     }
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope('published', function (Builder $builder) {
-    //         $builder->whereNotNull('published_at');
-    //     });
-    // }
+    public function uploadImage($image)
+    {
+        Storage::put($image->name, file_get_contents($image));
+        $this->update(['image' => $image->name]);
+    }
 }

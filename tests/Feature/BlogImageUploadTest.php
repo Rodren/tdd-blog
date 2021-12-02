@@ -20,7 +20,7 @@ class BlogImageUploadTest extends TestCase
 
         $res = $this->post('/blog', $blog);
 
-        $this->assertDatabaseHas('blogs', ['image' => $blog['image']]);
-        Storage::assertExists('photo1.jpg');
+        $this->assertDatabaseHas('blogs', ['image' => $blog['image']->name]);
+        Storage::assertExists($blog['image']->name);
     }
 }

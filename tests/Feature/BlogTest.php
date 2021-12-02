@@ -55,7 +55,7 @@ class BlogTest extends TestCase
         $res = $this->post('/blog', $blog);
 
         $res->assertRedirect('/blog');
-        $this->assertDatabaseHas('blogs', $blog);
+        $this->assertDatabaseHas('blogs', ['image' => $blog['image']->name]);
     }
 
     /** @test */
